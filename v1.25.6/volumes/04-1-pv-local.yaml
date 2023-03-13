@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-local
+spec:
+  capacity: 
+    storage: 5Gi
+  volumeMode: Filesystem
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  local:
+    path: /data/k8s/local-pv
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions: 
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - kubeadm-worker-01
+
