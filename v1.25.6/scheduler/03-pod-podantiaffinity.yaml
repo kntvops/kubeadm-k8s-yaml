@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: poda
+  labels:
+    k8s-app: poda
+spec:
+  containers:
+  - name: poda
+    image: ikubernetes/myapp:v1
+    ports:
+    - name: http
+      containerPort: 80
+  nodeSelector:
+    kubernetes.io/hostname: kubeadm-worker-02
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: podb-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      k8s-app: podb
+  template:
+    metadata:
+      name: podb
+      labels:
+        k8s-app: podb
+    spec:
+      containers:
+      - name: podb
+        image: ikubernetes/myapp:v2
+        ports:
+        - name: http
+          containerPort: 80
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:  # 硬策略
+          - labelSelector:
+              matchExpressions:
+              - key: k8s-app
+                operator: In
+                values:
+                - poda
+            topologyKey: kubernetes.io/hostname
