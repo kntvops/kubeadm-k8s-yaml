@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: busybox-job-paralle
+spec:
+  parallelism: 2
+  completions: 8
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: busybox
+        image: busybox
+        command: ["echo", "test paralle job"]
