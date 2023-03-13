@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: dengyouf/memleak:v1
+    imagePullPolicy: IfNotPresent
+    resources:
+      requests:
+        memory: "1024Mi"
+        cpu: "1"
+      #limits:
+      #  memory: "1024Mi"
+      #  cpu: "200m"
+

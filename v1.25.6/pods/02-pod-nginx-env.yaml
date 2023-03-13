@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-env
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.15.12-alpine
+    env:
+    - name: MYAPP
+      value: "Nginx"
+    ports:
+    - name: http
+      protocol: TCP
+      containerPort: 80
+    command: ['/bin/sh', '-c']
+    args: ['while true;do echo "$(date) ${MYAPP}";sleep 3;done']

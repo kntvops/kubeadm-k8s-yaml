@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.15.12-alpine
+    imagePullPolicy: IfNotPresent
+    ports:
+    - name: http
+      protocol: TCP
+      containerPort: 10080
+
