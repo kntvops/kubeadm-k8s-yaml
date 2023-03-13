@@ -1,0 +1,22 @@
+#  kubectl  create cm www.ilinux.io --from-file=./nginx.conf.d
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cm-nginx-volume
+  labels:
+    k8s-app: cm
+spec:
+  containers:
+  - name: nginx-server
+    image: nginx:alpine
+    volumeMounts:
+    - name: nginxcfgs
+      mountPath: /etc/nginx/conf.d/
+      readOnly: true
+  volumes:
+  - name: nginxcfgs
+    configMap:
+      name: www.ilinux.io
+      optional: false
+  
+

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-demo
+data:
+  cm-host: 0.0.0.0
+  cm-port: "10080"
+  app.config: |
+    threads = 4
+    connections = 1024
