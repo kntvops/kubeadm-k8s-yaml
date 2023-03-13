@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: externalname-svc
+  namespace: default
+spec:
+  type: ExternalName
+  #externalName: nginx.ik8s.io
+  externalName: 192.168.1.250 #非集群节点IP
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 0
+  selector: {}
