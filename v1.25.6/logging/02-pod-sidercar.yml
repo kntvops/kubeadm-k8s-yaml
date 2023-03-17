@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sidercar-pod
+spec:
+  containers:
+  - name: mainpod
+    image: busybox
+    args:
+      - /bin/sh
+      - -c
+      - >
+        i=0;
+        while true;do
+          echo "$i: ERROR $(date)" >> /var/log/t-err.log;
+          echo "$i: INFO $(date)" >> /var/log/t-info.log;
+          i=$((i+1));
+          sleep 2;
+        done
+    volumeMounts:
+    - name: tlog
+      mountPath: /var/log
+
+  - name: read-t-err
+    image: busybox
+    args: [/bin/sh, -c, "tail -n+1 -f /var/log/t-err.log"]
+    volumeMounts:
+    - name: tlog
+      mountPath: /var/log
+
+  - name: read-t-info
+    image: busybox
+    args: [/bin/sh, -c, "tail -n+1 -f /var/log/t-info.log"]
+    volumeMounts:
+    - name: tlog
+      mountPath: /var/log
+
+  volumes:
+  - name: tlog
+    emptyDir: {}
+
+
