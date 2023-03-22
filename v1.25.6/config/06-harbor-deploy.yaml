@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+   name: harbor-myapp
+   namespace: default
+   labels:
+     app: myapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: myapp
+  minReadySeconds: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+     metadata:
+        labels:
+          app: myapp
+     spec:
+       hostAliases:
+       - ip: "192.168.1.219"
+         hostnames:
+         - "reg.linux.io"
+       imagePullSecrets:
+       - name: harbor-secret
+       containers:
+       - name: myapp
+         image: reg.linux.io/baseimages/myapp:v1
+         ports:
+         - name: http
+           protocol: TCP
+           containerPort: 80
+
+         resources:
+           requests: 
+               memory: 50Mi
+               cpu: 50m
